@@ -1,0 +1,229 @@
+// *************************************
+//
+//   Envy Video Player
+//
+//   -> This works best if you keep the
+//      default class suffixes and only
+//      change $prefix.
+//
+// *************************************
+
+// -------------------------------------
+//   Settings
+// -------------------------------------
+
+$ctrl-btn-color: white
+$ctrl-bg-color: black
+$ctrl-bg-opacity: 0.7
+$icons: fs "\e604", quality "\e603" // Everything but play/pause since these swap out
+$icon-font-name: "icomoon"
+$icon-pause: "\e602"
+$icon-play: "\e601"
+$icon-size: 14px // affects control bar size
+$icon-start: "\e600"
+$overlay-bg-color: rgba(black, 0.3) // rgba overlay color over poster image
+$prefix: envy-video
+$wrap-bg-color: black
+$wrap-bg-image: none // default; overwritten by poster attribute
+$wrap-bg-position: center center
+$wrap-bg-repeat: no-repeat
+$wrap-bg-size: contain
+
+// ----- Fonts ----- //
+
+@font-face
+  font-family: $icon-font-name
+  src: url('../fonts/icomoon.eot')
+  src: url('../fonts/icomoon.eot?#iefix') format('embedded-opentype'), url('../fonts/icomoon.ttf') format('truetype'), url('../fonts/icomoon.woff') format('woff'), url('../fonts/icomoon.svg#icomoon') format('svg')
+  font-weight: normal
+  font-style: normal
+
+// -------------------------------------
+//   Default Styles
+// -------------------------------------
+
+// ----- Helpers ----- //
+
+=prefix($selector, $attribute...)
+  -moz-#{$selector}: $attribute
+  -ms-#{$selector}: $attribute
+  -webkit-#{$selector}: $attribute
+  #{$selector}: $attribute
+
+// ----- Icons ----- //
+
+.#{$prefix}--icn:before
+  -moz-osx-font-smoothing: grayscale
+  -webkit-font-smoothing: antialiased
+  display: inline-block
+  font-family: $icon-font-name
+  font-style: normal
+  font-weight: normal
+  speak: none
+  vertical-align: baseline
+
+@each $icon in $icons
+  .#{$prefix}--icn--#{nth($icon, 1)}:before
+    content: "#{nth($icon, 2)}"
+
+.#{$prefix}--icn--playPause:before
+  content: $icon-play
+
+.#{$prefix}--wrap.is--playing .#{$prefix}--icn--playPause:before
+  content: $icon-pause
+
+// ----- Player Styles ----- //
+
+body
+  -moz-osx-font-smoothing: grayscale
+  -webkit-backface-visibility: hidden
+  -webkit-font-smoothing: antialiased
+  font-size: 100%
+
+.#{$prefix}--btn
+  background: rgba($ctrl-btn-color, 0)
+  border: none
+  bottom: 0
+  color: $ctrl-btn-color
+  cursor: pointer
+  font-size: $icon-size
+  outline: none
+  margin: 0
+  padding: $icon-size
+  position: absolute
+  text-align: center
+  z-index: 6
+
+  &:hover .#{$prefix}--icn
+    text-shadow: 0 0 15px rgba($ctrl-btn-color, 1)
+    opacity: 1
+
+  .#{$prefix}--icn
+    +prefix(transition, opacity 150ms ease-out, text-shadow 150ms ease-out)
+    opacity: 0.8
+
+.#{$prefix}--ctrl
+  +prefix(transition, opacity 200ms ease-out)
+  background: rgba($ctrl-bg-color, $ctrl-bg-opacity)
+  bottom: 0
+  box-sizing: border-box
+  display: none
+  height: round(3.2 * $icon-size)
+  left: 0
+  opacity: 0
+  position: absolute
+  width: 100%
+  z-index: 5
+
+.#{$prefix}--fs
+  right: 0
+  width: 3.5 * $icon-size
+
+.#{$prefix}--overlay, .#{$prefix}--poster
+  height: 100%
+  left: 0
+  position: absolute
+  top: 0
+  width: 100%
+  z-index: 2
+
+.#{$prefix}--overlay
+  background-color: $overlay-bg-color
+  position: absolute
+  z-index: 3
+
+.#{$prefix}--playhead
+  +prefix(transition, height 150ms ease-out, margin 150ms ease-out, opacity 150ms ease-out, width 150ms ease-out)
+  background-color: $ctrl-btn-color
+  border-radius: 50%
+  box-shadow: 0 0 8px rgba($ctrl-bg-color, 0.3)
+  bottom: 50%
+  left: 0
+  margin-bottom: -(round($icon-size/2.5))
+  margin-left: -(round($icon-size/2.5))
+  opacity: 0
+  position: absolute
+  height: round(0.8 * $icon-size)
+  width: round(0.8 * $icon-size)
+
+.#{$prefix}--playPause
+  padding-left: 1.3 * $icon-size
+  width: 3 * $icon-size
+
+.#{$prefix}--poster
+  background-color: $wrap-bg-color
+  background-position: $wrap-bg-position
+  background-repeat: $wrap-bg-repeat
+  background-size: $wrap-bg-size
+  cursor: pointer
+
+  &:before
+    +prefix(transition, text-shadow 150ms ease-out)
+    color: $ctrl-btn-color
+    content: $icon-start
+    font-family: $icon-font-name
+    font-size: 100px
+    height: 100px
+    left: 50%
+    margin-left: -50px
+    margin-top: -50px
+    position: absolute
+    text-shadow: 0 0 20px rgba($ctrl-bg-color, 0.4)
+    top: 50%
+    width: 100px
+    z-index: 4
+
+  &:hover:before
+    text-shadow: 0 0 20px rgba($ctrl-btn-color, 0.4)
+
+.#{$prefix}--progress, .#{$prefix}--timeline
+  bottom: 50%
+  border-radius: 3px
+  height: 3px
+  position: absolute
+  margin-bottom: -1.5px
+  width: 100%
+
+.#{$prefix}--progress
+  background-color: rgba($ctrl-btn-color, 0.8)
+  width: 0
+
+.#{$prefix}--quality
+  right: 3.5 * $icon-size
+  width: 3.5 * $icon-size
+
+.#{$prefix}--scrub
+  bottom: 0
+  cursor: pointer
+  height: 100%
+  left: 4 * $icon-size
+  position: relative
+  width: calc(100% - #{12 * $icon-size})
+  z-index: 5
+
+  &:hover .#{$prefix}--playhead
+    height: $icon-size
+    margin-bottom: -(round($icon-size/2))
+    margin-left: -(round($icon-size/2))
+    opacity: 1
+    width: $icon-size
+
+.#{$prefix}--timeline
+  background-color: rgba($ctrl-btn-color, 0.2)
+
+.#{$prefix}--wrap
+  background-color: $ctrl-bg-color
+  position: relative
+
+.#{$prefix}--wrap.has--started
+  .#{$prefix}--ctrl, &.is--playing:hover .#{$prefix}--ctrl
+    display: block
+    opacity: 1
+
+  &.is--playing .#{$prefix}--ctrl
+    opacity: 0
+
+  .#{$prefix}--poster
+    display: none
+
+

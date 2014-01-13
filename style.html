@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>Player Style</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+  <video class="video video1" controls height="300" poster="images/emberjs.jpg" width="600">
+    <source src="videos/mp4.mp4" type="video/mp4">
+    <source src="videos/webm.webm" type="video/webm">
+  </video>
+  <script type="text/javascript" src="js/player.js"></script>
+  <script type="text/javascript">
+    one = new EnvyVideo({video:'.video1'});
+  </script>
+</body>
+</html>
